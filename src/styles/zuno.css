@@ -1,0 +1,155 @@
+/* =========================================================
+   O Zuno flutuante
+   - Caixa com tamanho próprio (reserva espaço, nunca sobrepõe).
+   - Corpo levita devagar; a sombra fica no "chão" e respira junto.
+   - Entre o corpo e a sombra sempre há ar: ele nunca toca o chão.
+   ========================================================= */
+.zuno {
+  --size: 120px;
+  --amp: 7px;
+  position: relative;
+  width: var(--size);
+  max-width: 100%;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.zuno__body {
+  width: 100%;
+  animation: zuno-float var(--float-duration) var(--ease) infinite alternate;
+  will-change: transform;
+}
+
+.zuno__art {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 544 / 512;
+  -webkit-user-drag: none;
+}
+
+.zuno__shadow {
+  width: 54%;
+  height: calc(var(--size) * 0.065);
+  min-height: 3px;
+  margin-top: calc(var(--size) * 0.16);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--zuno-shadow), transparent);
+  animation: zuno-shadow var(--float-duration) var(--ease) infinite alternate;
+}
+
+.zuno--xs { --size: 34px; --amp: 1.5px; }
+.zuno--xs .zuno__shadow { display: none; }
+.zuno--sm { --size: 64px; --amp: 3px; }
+.zuno--md { --size: 120px; --amp: 6px; }
+.zuno--lg { --size: clamp(104px, 20vw, 190px); --amp: 7px; }
+.zuno--xl { --size: clamp(128px, min(38vw, 24vh), 300px); --amp: 9px; }
+@media (min-width: 900px) { .zuno--xl { --size: clamp(200px, min(30vw, 36vh), 340px); --amp: 11px; } }
+.zuno--companion { --size: clamp(84px, 16vw, 220px); --amp: 8px; }
+
+.zuno[data-float="slow"] { --float-duration: 6s; }
+.zuno[data-float="lively"] { --float-duration: 3.2s; }
+
+@keyframes zuno-float {
+  0%   { transform: translateY(calc(var(--amp) * var(--amp-k, 1) * 0.4)) rotate(-0.6deg); }
+  100% { transform: translateY(calc(var(--amp) * var(--amp-k, 1) * -1)) rotate(0.6deg); }
+}
+@keyframes zuno-shadow {
+  0%   { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0.82); opacity: 0.6; }
+}
+
+/* ---------- Reações ---------- */
+.zuno__pose { transform-origin: 50% 70%; }
+.zuno[data-state="happy"] { --amp-k: 1.7; }   /* feliz: flutua um pouco mais */
+.zuno[data-motion="celebrate"] .zuno__pose { animation: zuno-celebrate 1.25s var(--ease) both; }
+.zuno[data-motion="shake"] .zuno__pose { animation: zuno-shake 0.65s ease-in-out both; }
+
+@keyframes zuno-celebrate {
+  0%   { transform: none; }
+  18%  { transform: translateY(-9%) scale(1.14) rotate(-5deg); }
+  38%  { transform: translateY(-3%) scale(1.12) rotate(5deg); }
+  58%  { transform: translateY(-7%) scale(1.1) rotate(-3deg); }
+  80%  { transform: translateY(-1%) scale(1.04) rotate(1deg); }
+  100% { transform: none; }
+}
+@keyframes zuno-shake {
+  0%, 100% { transform: none; }
+  20% { transform: translateX(-3%) rotate(-4deg); }
+  45% { transform: translateX(3%) rotate(3deg); }
+  70% { transform: translateX(-2%) rotate(-2deg); }
+}
+
+/* ---------- Estados emocionais (postura; a expressão vem da arte) ---------- */
+.zuno__pose, .zuno__look { transition: transform 0.55s var(--ease), filter 0.55s var(--ease); }
+.zuno[data-float="sleepy"] { --float-duration: 7.5s; --amp-k: 0.6; }
+.zuno[data-state="curious"]     .zuno__pose { transform: rotate(-7deg) translateX(2%); }
+.zuno[data-state="confused"]    .zuno__pose { transform: rotate(8deg) translateY(2%); }
+.zuno[data-state="surprised"]   .zuno__pose { transform: translateY(-5%) scale(1.08); }
+.zuno[data-state="proud"]       .zuno__pose { transform: translateY(-3%) scale(1.06); }
+.zuno[data-state="proud"]       { --amp-k: 1.4; }
+.zuno[data-state="sleepy"]      .zuno__pose { transform: rotate(9deg) translateY(5%); filter: saturate(0.8) brightness(0.96); }
+.zuno[data-state="frustrated"]  .zuno__pose { transform: rotate(-5deg) translateY(3%); filter: saturate(0.9); }
+.zuno[data-state="sad"]         .zuno__pose { transform: translateY(6%) scale(0.97); filter: saturate(0.82); }
+.zuno[data-state="irritated"]   .zuno__pose { transform: rotate(-3deg) scale(1.02); }
+.zuno[data-state="irritated"]   .zuno__art  { animation: zuno-tremble 2.6s ease-in-out infinite; }
+.zuno[data-state="provocative"] .zuno__pose { transform: rotate(-4deg); }
+.zuno[data-state="mischievous"] .zuno__pose { transform: rotate(-7deg) translateX(-3%) scale(1.03); }
+
+/* Olhar: ele se inclina para o conteúdo (à direita) e depois volta para você */
+.zuno[data-look="question"] .zuno__look { transform: rotate(4deg) translate(3%, -1%); }
+.zuno[data-look="answer"]   .zuno__look { transform: rotate(9deg) translate(6%, 4%); }
+
+/* ---------- Reações curtas ---------- */
+.zuno[data-motion="pop"] .zuno__pose { animation: zuno-pop 0.7s var(--ease) both; }
+.zuno[data-motion="laugh"] .zuno__pose { animation: zuno-laugh 0.95s ease-in-out both; }
+.zuno[data-motion="laugh-big"] .zuno__pose { animation: zuno-laugh-big 1.45s ease-in-out both; }
+
+@keyframes zuno-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08) translateY(-4%); }
+  100% { transform: scale(1); }
+}
+/* risada: corpo chacoalha rápido, as "orelhas" acompanham pela compressão lateral */
+@keyframes zuno-laugh {
+  0%, 100% { transform: none; }
+  15% { transform: scale(1.04, 0.96) rotate(-3deg); }
+  30% { transform: scale(0.97, 1.03) rotate(3deg) translateY(-3%); }
+  45% { transform: scale(1.04, 0.96) rotate(-3deg); }
+  60% { transform: scale(0.97, 1.03) rotate(3deg) translateY(-3%); }
+  80% { transform: scale(1.02, 0.98); }
+}
+@keyframes zuno-laugh-big {
+  0%, 100% { transform: none; }
+  10% { transform: scale(1.07, 0.93) rotate(-6deg); }
+  20% { transform: scale(0.95, 1.06) rotate(6deg) translateY(-6%); }
+  30% { transform: scale(1.07, 0.93) rotate(-6deg); }
+  40% { transform: scale(0.95, 1.06) rotate(6deg) translateY(-6%); }
+  50% { transform: scale(1.07, 0.93) rotate(-5deg); }
+  60% { transform: scale(0.96, 1.05) rotate(5deg) translateY(-4%); }
+  75% { transform: rotate(-12deg) translateX(-4%); }
+  88% { transform: rotate(4deg); }
+}
+@keyframes zuno-tremble {
+  0%, 92%, 100% { transform: none; }
+  94% { transform: translateX(-1.5%); }
+  96% { transform: translateX(1.5%); }
+  98% { transform: translateX(-1%); }
+}
+
+/* Movimento reduzido: preferência do sistema OU ajuste no Perfil */
+@media (prefers-reduced-motion: reduce) {
+  .zuno__body, .zuno__shadow, .zuno__pose, .zuno__art { animation: none !important; }
+  .zuno__pose, .zuno__look { transition: none !important; }
+}
+:root[data-reduce-motion] .zuno__body,
+:root[data-reduce-motion] .zuno__shadow,
+:root[data-reduce-motion] .zuno__pose,
+:root[data-reduce-motion] .zuno__art { animation: none !important; }
+:root[data-reduce-motion] .zuno__pose,
+:root[data-reduce-motion] .zuno__look { transition: none !important; }
+:root[data-reduce-motion] *, :root[data-reduce-motion] *::before { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

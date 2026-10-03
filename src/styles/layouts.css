@@ -1,0 +1,220 @@
+/* =========================================================
+   Layout de entrada (login / cadastro / recuperar)
+   ========================================================= */
+.auth {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.auth__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: max(24px, env(safe-area-inset-top, 0px)) var(--gutter) 8px;
+  text-align: center;
+}
+.auth__brand { display: grid; gap: 10px; justify-items: center; }
+.auth__tagline { color: var(--text-2); font-size: var(--fs-lg); }
+
+.auth__panel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px var(--gutter) max(32px, env(safe-area-inset-bottom, 0px));
+}
+.auth__card { width: 100%; max-width: 420px; }
+
+.auth__heading { display: grid; gap: 6px; }
+.auth__title { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 700; letter-spacing: -0.01em; }
+.auth__lead { color: var(--text-2); }
+
+.form { display: grid; gap: 18px; }
+.form__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; margin-top: -6px; }
+
+.auth__switch { display: grid; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); margin-top: 4px; }
+.auth__switch-text { text-align: center; color: var(--text-2); font-size: var(--fs-sm); }
+.auth__footer { text-align: center; padding-top: 4px; }
+
+/* Celular deitado / telas baixas: Zuno ao lado da marca para não empurrar o form */
+@media (max-height: 560px) and (orientation: landscape) and (max-width: 899px) {
+  .auth__stage { flex-direction: row; gap: 20px; padding-top: 16px; }
+  .auth__brand { justify-items: start; text-align: left; }
+}
+
+/* Tablet e desktop: palco do Zuno à esquerda, formulário à direita */
+@media (min-width: 900px) {
+  .auth { grid-template-rows: none; grid-template-columns: minmax(0, 1.1fr) minmax(420px, 1fr); }
+  .auth__stage {
+    position: sticky; top: 0; height: 100vh; height: 100dvh;
+    gap: 28px; padding: 48px;
+  }
+  .auth__panel {
+    align-items: center;
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    padding: 48px clamp(32px, 5vw, 80px);
+  }
+  .auth__title { font-size: var(--fs-2xl); }
+}
+
+/* =========================================================
+   Casca do app logado
+   ========================================================= */
+.app { min-height: 100vh; min-height: 100dvh; }
+.app__main { min-width: 0; }
+
+.app__content {
+  width: 100%;
+  max-width: calc(var(--content-max) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 20px var(--gutter) calc(var(--bottombar-h) + 32px + env(safe-area-inset-bottom, 0px));
+  outline: none;
+}
+.app__content--wide { max-width: calc(var(--content-wide) + var(--gutter) * 2); }
+
+/* Topo (celular) */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) var(--gutter) 0;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+}
+.topbar__brand { text-decoration: none; padding: 8px 0; }
+.topbar__avatar {
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--brand-soft); color: var(--brand); font-weight: 700; text-decoration: none; font-size: var(--fs-sm);
+}
+
+/* Barra inferior (celular) */
+.bottombar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  height: calc(var(--bottombar-h) + env(safe-area-inset-bottom, 0px));
+  padding: 0 max(4px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(4px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-top: 1px solid var(--line);
+}
+
+.nav__link {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text-3); text-decoration: none; font-weight: 500;
+  border: 0; background: transparent; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.nav__link:hover { color: var(--text); }
+.nav__link.is-active { color: var(--brand); }
+
+.nav__link--bar {
+  flex-direction: column; justify-content: center; gap: 3px;
+  font-size: 0.6875rem; min-width: 0; padding: 6px 2px;
+  position: relative;
+}
+.nav__link--bar .nav__label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav__link--bar.is-active::before {
+  content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 3px; border-radius: 0 0 3px 3px; background: var(--brand);
+}
+
+/* Menu lateral: escondido no celular */
+.sidebar { display: none; }
+
+/* ---------- Tablet: trilho compacto ---------- */
+@media (min-width: 768px) {
+  .topbar, .bottombar { display: none; }
+  .app { display: grid; grid-template-columns: var(--rail-w) minmax(0, 1fr); }
+  .app__content { padding-top: 40px; padding-bottom: 64px; }
+
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; height: 100dvh;
+    display: flex; flex-direction: column; align-items: stretch; gap: 8px;
+    padding: 20px 10px;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .sidebar__brand { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px 0 22px; text-decoration: none; }
+  .sidebar__brand .wordmark { font-size: 0.75rem; letter-spacing: 0.18em; }
+  .sidebar__links { display: grid; gap: 4px; }
+
+  .nav__link--side {
+    flex-direction: column; justify-content: center; gap: 4px;
+    padding: 10px 4px; border-radius: var(--radius); font-size: 0.6875rem; text-align: center;
+  }
+  .nav__link--side .nav__label { line-height: 1.2; }
+  .nav__link--side.is-active { background: var(--brand-soft); }
+  .nav__link--side:hover:not(.is-active) { background: var(--surface-2); }
+  .sidebar__logout { margin-top: auto; }
+}
+
+/* ---------- Desktop: menu lateral completo ---------- */
+@media (min-width: 1100px) {
+  .app { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+  .sidebar { padding: 28px 16px; }
+  .sidebar__brand { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 0 10px 32px; }
+  .sidebar__brand .wordmark { font-size: 1.125rem; letter-spacing: 0.14em; }
+  .nav__link--side {
+    flex-direction: row; justify-content: flex-start; gap: 14px;
+    padding: 0 14px; min-height: 46px; font-size: var(--fs-md); text-align: left;
+  }
+}
+
+/* =========================================================
+   Layout de aprendizado: Zuno em coluna própria à esquerda
+   ========================================================= */
+.lesson {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+.lesson__main { display: grid; gap: 28px; align-content: start; min-width: 0; }
+
+.companion { min-width: 0; }
+.companion__inner {
+  display: flex; align-items: center; gap: 14px;
+}
+.companion__bubble {
+  position: relative;
+  flex: 1 1 auto; min-width: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: var(--fs-md);
+  line-height: 1.45;
+  box-shadow: var(--elev);
+}
+/* Rabinho do balão apontando para o Zuno (à esquerda no celular) */
+.companion__bubble::before {
+  content: ""; position: absolute; left: -7px; top: 50%;
+  width: 12px; height: 12px; background: var(--surface);
+  border-left: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+@media (min-width: 768px) {
+  .lesson {
+    grid-template-columns: clamp(180px, 22vw, 260px) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+  }
+  .companion { align-self: stretch; }
+  .companion__inner {
+    position: sticky; top: max(40px, 12vh);
+    flex-direction: column; align-items: center; gap: 18px; text-align: center;
+  }
+  .companion__bubble { width: 100%; font-size: var(--fs-sm); }
+  .companion__bubble::before {
+    left: 50%; top: -7px;
+    transform: translateX(-50%) rotate(135deg);
+  }
+}

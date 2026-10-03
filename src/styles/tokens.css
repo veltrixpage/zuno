@@ -1,0 +1,76 @@
+/* =========================================================
+   ZUNO · Design tokens
+   Layout: mobile-first; casca com menu lateral (≥768px) e barra inferior (<768px);
+   o Zuno sempre tem área própria reservada no grid.
+   ========================================================= */
+:root {
+  /* Cor */
+  --bg: #f7f6f1;            /* off-white quente */
+  --surface: #ffffff;       /* cards */
+  --surface-2: #f1f0ea;     /* neutro de apoio */
+  --line: #e8e6df;
+  --text: #171c1a;          /* texto principal */
+  --text-2: #66706b;
+  --text-3: #8d948f;
+  --brand: #276556;         /* verde do Zuno */
+  --brand-strong: #1d4e42;
+  --brand-soft: #edf4f0;
+  --brand-ink: #ffffff;     /* texto sobre o verde */
+  --brand-light: #4f9a6a;   /* verde claro das orelhas */
+  --danger: #a8402d;
+  --danger-soft: #f7e6e1;
+  --focus: rgba(39, 101, 86, 0.28);
+  --zuno-shadow: rgba(19, 24, 21, 0.22);
+  --elev: 0 1px 2px rgba(23, 28, 26, 0.04), 0 10px 30px -18px rgba(23, 28, 26, 0.14);
+
+  /* Tipografia */
+  --font-display: 'Bricolage Grotesque', 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --fs-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  --fs-3xl: clamp(2.1rem, 1.6rem + 2.6vw, 3.4rem);
+
+  /* Espaço e forma */
+  --gutter: clamp(16px, 4vw, 48px);
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 24px;
+  --sidebar-w: 248px;
+  --rail-w: 88px;
+  --bottombar-h: 64px;
+  --content-max: 880px;
+  --content-wide: 1120px;
+
+  --brand-line: #cfe2d8;    /* borda verde suave (selecionado) */
+
+  /* Movimento */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --float-duration: 4.6s;
+}
+
+/* O app usa sempre a paleta clara (fundo neutro, cards brancos, verde como destaque).
+   O tema escuro fica disponível só se for ligado de propósito com data-theme="dark". */
+:root[data-theme="dark"] {
+  --bg: #0e1311;
+  --surface: #151b18;
+  --surface-2: #1c2420;
+  --line: #29322e;
+  --text: #edf0ed;
+  --text-2: #a7aeaa;
+  --text-3: #7c847f;
+  --brand: #4fa487;
+  --brand-strong: #69b99c;
+  --brand-soft: #1a2e27;
+  --brand-ink: #08110d;
+  --brand-light: #6fbf8d;
+  --danger: #e28a75;
+  --danger-soft: #2e1b17;
+  --focus: rgba(79, 164, 135, 0.35);
+  --zuno-shadow: rgba(0, 0, 0, 0.55);
+  --elev: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}

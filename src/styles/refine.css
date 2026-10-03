@@ -1,0 +1,236 @@
+/* =========================================================
+   Refinamento visual e de UX (rodada pós Prompt 5)
+   - Verde do Zuno como DESTAQUE, não como cor dominante.
+   - Fundo off-white, cards brancos, texto escuro.
+   - Aula larga (com bordas laterais pequenas) e Zuno sobreposto ao card.
+   Esta folha vem por último e só refina: nenhuma regra antiga foi apagada.
+   ========================================================= */
+
+/* ---------- 1. Verde com moderação ---------- */
+body { background: var(--bg); color: var(--text); }
+
+/* Menu lateral: ativo neutro com um traço verde, sem bloco verde */
+@media (min-width: 768px) {
+  .nav__link--side.is-active { background: var(--surface); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+  .nav__link--side.is-active .icon { color: var(--brand); }
+}
+.nav__link--bar.is-active { color: var(--text); }
+.nav__link--bar.is-active .icon { color: var(--brand); }
+
+/* Seleções: verde SUAVE (fundo claro + borda verde clara), nunca bloco cheio */
+.lang-pill.is-active, .pill.is-active {
+  background: var(--brand-soft); border-color: var(--brand-line); color: var(--brand-strong);
+}
+.level-tab.is-active { background: var(--surface); border-color: var(--brand-line); color: var(--text); box-shadow: inset 0 -3px 0 var(--brand); }
+.evo__equip.is-active { background: var(--brand-soft); border-color: var(--brand-line); color: var(--brand-strong); }
+.plan-chip--plus { background: var(--brand-soft); color: var(--brand-strong); }
+.persona.is-active { background: var(--brand-soft); border-color: var(--brand-line); box-shadow: none; }
+.onb__lang.is-active { background: var(--brand-soft); border-color: var(--brand-line); box-shadow: none; }
+.phrase.is-active { background: var(--brand-soft); border-color: var(--brand-line); box-shadow: none; }
+.language-row.is-active { border-color: var(--brand-line); }
+
+/* Avisos e notas: neutros */
+.onb__note, .talk__error.is-limit { background: var(--surface-2); color: var(--text-2); }
+.teach { background: var(--surface-2); }
+
+/* Ícones de métricas: ícone verde pequeno, fundo neutro */
+.stat__icon { background: var(--surface-2); color: var(--brand); }
+
+/* Hover discreto: borda escura suave em vez de verde em todo lugar */
+.lang-pill:hover, .pill:hover, .situation:hover, .tool:hover, .recent__item:hover,
+.my-langs__item:hover, .lang-option:hover, .review-row:hover, .phrase:hover, .onb__lang:hover {
+  border-color: color-mix(in srgb, var(--text) 22%, var(--line));
+}
+
+/* ---------- 2. Botão principal: o único verde cheio da tela ---------- */
+.btn--primary { transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s; }
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) { background: var(--brand-strong); transform: translateY(-1px); box-shadow: 0 8px 20px -10px rgba(39, 101, 86, 0.55); }
+}
+
+/* ---------- 3. Estatísticas em cards brancos, números grandes e escuros ---------- */
+.stats--grid {
+  padding: 0; border: 0; background: none; border-radius: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 12px;
+}
+.stats--grid .stat {
+  flex-direction: column; align-items: flex-start; gap: 14px;
+  padding: 18px 18px 16px; border-radius: 20px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.stats--grid .stat__icon { width: 34px; height: 34px; border-radius: 10px; }
+.stats--grid .stat__icon .icon { width: 18px; height: 18px; }
+.stats--grid .stat__value { font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem); line-height: 1; letter-spacing: -0.02em; }
+.stats--grid .stat__label { white-space: normal; font-size: var(--fs-sm); color: var(--text-2); }
+@media (max-width: 479px) { .stats--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+
+/* ---------- 4. Área principal com sidebar: centralizada e respirando ---------- */
+@media (min-width: 768px) {
+  .app__content { padding-block: clamp(32px, 5vh, 56px) clamp(48px, 8vh, 96px); }
+}
+.page { gap: clamp(28px, 4vw, 44px); }
+.page-title { letter-spacing: -0.025em; }
+.page-subtitle { color: var(--text-2); max-width: 60ch; }
+.card, .my-langs__item, .language-row, .situation, .tool, .persona, .evo__item { background: var(--surface); }
+
+/* ---------- 5. Modo Mundo: cenários em cards leves ---------- */
+.situations { gap: 12px; }
+.situation { border-radius: 18px; padding: 16px; min-height: 92px; align-content: space-between; }
+.situation__emoji { font-size: 1.6rem; }
+.situation__label { font-weight: 600; }
+.world__hero { padding: clamp(20px, 3vw, 32px); border-radius: 28px; background: var(--surface); border: 1px solid var(--line); }
+
+/* =========================================================
+   AULA: espaço grande e imersivo
+   - container largo com bordas laterais pequenas
+   - um card branco grande para a atividade
+   - Zuno flutuando sobre o canto superior esquerdo do card,
+     com área própria reservada (nunca cobre texto nem botão)
+   ========================================================= */
+.lesson-screen {
+  --side: clamp(14px, 4vw, 40px);
+  width: min(100% - var(--side) * 2, 1100px);
+  max-width: none; margin-inline: auto; padding-inline: 0;
+  gap: 0;
+}
+
+/* Topo: idioma · unidade · título · aula · progresso */
+.lesson-bar { gap: 14px; padding-bottom: 14px; background: color-mix(in srgb, var(--bg) 94%, transparent); }
+.lesson-bar__where { gap: 8px; }
+.lesson-bar__lang { font-size: var(--fs-sm); }
+.lesson-head { display: grid; gap: 2px; min-width: 0; }
+.lesson-head__kicker {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);
+}
+.lesson-head__dot { color: var(--text-3); }
+.lesson-head__lesson { color: var(--text-2); }
+.lesson-head__title {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15;
+  font-size: clamp(1.25rem, 1.05rem + 1vw, 1.75rem); color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.lesson-head__sub {
+  font-size: var(--fs-sm); color: var(--text-3);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60ch;
+}
+.lesson-bar__track { gap: 14px; }
+.lesson-bar__progress .progress { height: 6px; background: var(--surface-2); border-radius: 99px; }
+.lesson-bar__count { color: var(--text-2); font-weight: 600; font-size: var(--fs-xs); }
+
+/* O card da aula */
+.lesson-screen > .lesson {
+  --z: 104px;          /* tamanho do Zuno */
+  --lift: 44px;        /* quanto ele sobe acima da borda do card */
+  --pad: 20px;
+  position: relative;
+  margin-top: calc(var(--lift) + 12px);
+  padding: var(--pad);
+  border-radius: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--elev);
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.lesson-screen .lesson__main { gap: 22px; }
+.lesson-screen .lesson-stage { max-width: none; gap: 22px; }
+
+/* Zuno: flutuando sobre o canto superior esquerdo. Não é botão. */
+.lesson-screen .companion { position: relative; min-width: 0; }
+.lesson-screen .companion__inner {
+  position: relative; top: auto; left: auto; width: auto;
+  display: flex; flex-direction: row; align-items: center; gap: 12px;
+  text-align: left; pointer-events: auto;
+  /* faixa reservada: altura da parte do Zuno que fica dentro do card */
+  min-height: calc(var(--z) - var(--lift) - var(--pad) + 4px);
+  padding-left: calc(var(--z) + 10px);
+}
+.lesson-screen .companion__stage {
+  position: absolute; left: -4px;
+  top: calc(-1 * (var(--lift) + var(--pad)));
+  width: var(--z); padding: 0; pointer-events: none;
+  display: grid; place-items: center;
+}
+.lesson-screen .lesson .zuno--companion { --size: var(--z); --amp: 5px; }
+
+/* Balão: fala no idioma + tradução, ao lado do Zuno na faixa reservada */
+.lesson-screen .companion__bubble {
+  width: auto; max-width: 100%; max-height: none; overflow: visible;
+  padding: 10px 14px; border-radius: 16px;
+  font-size: var(--fs-sm); line-height: 1.35;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 6px 18px -12px rgba(23, 28, 26, 0.25);
+  overflow-wrap: break-word;
+}
+.lesson-screen .companion__bubble::before {
+  left: -7px; top: 50%; transform: translateY(-50%) rotate(45deg);
+  background: var(--surface);
+}
+.lesson-screen .companion__line { flex-direction: row; justify-content: flex-start; gap: 6px; }
+.lesson-screen .companion__line .flag { width: 16px; height: 16px; }
+.lesson-screen .companion__translation { font-size: var(--fs-xs); }
+.lesson-screen .companion__reveal { justify-self: start; }
+
+/* Conteúdo da atividade dentro do card */
+.lesson-screen .ex__prompt { letter-spacing: -0.02em; }
+.lesson-screen .teach-step { background: transparent; border: 0; padding: 0; gap: 12px; }
+.lesson-screen .teach-step--grammar .eyebrow,
+.lesson-screen .teach-step .ex__instruction { color: var(--brand); }
+.lesson-screen .teach-step__title { color: var(--text); font-size: clamp(1.9rem, 1.4rem + 2vw, 2.75rem); }
+.lesson-screen .teach-step__text { color: var(--text-2); max-width: 60ch; line-height: 1.55; }
+.lesson-screen .skill-chips li { background: var(--surface-2); color: var(--text-2); }
+.lesson-screen .teach-step__next { justify-self: stretch; min-height: 54px; margin-top: 10px; }
+
+/* Feedback: neutro, com o ícone verde (ou vermelho) como sinal */
+.feedback { background: var(--surface-2); border-color: transparent; }
+.feedback--right { background: var(--surface-2); }
+.feedback--right .feedback__title { color: var(--text); }
+
+/* Telas de foco sem card (resumo, avisos) continuam respirando */
+.lesson-screen--center { width: min(100% - 32px, 720px); }
+
+/* ---------- Tablet e computador ---------- */
+@media (min-width: 900px) {
+  .lesson-bar { padding-top: calc(16px + env(safe-area-inset-top, 0px)); gap: 16px; }
+  .lesson-head__title { font-size: clamp(1.5rem, 1.1rem + 1vw, 2rem); }
+
+  .lesson-screen > .lesson {
+    --z: clamp(190px, 17vw, 236px);
+    --lift: 76px;
+    --pad: clamp(32px, 3.4vw, 48px);
+    margin-top: calc(var(--lift) + 18px);
+    grid-template-columns: var(--z) minmax(0, 1fr);
+    column-gap: clamp(28px, 3vw, 48px);
+    padding-left: clamp(24px, 2.6vw, 36px);
+  }
+  /* Coluna do Zuno: ele sobe acima do card; o balão fica EMBAIXO dele */
+  .lesson-screen .companion__inner {
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding-left: 0;
+    padding-top: calc(var(--z) - var(--lift) - var(--pad) + 18px);
+    min-height: 0;
+  }
+  .lesson-screen .companion__stage { left: 0; }
+  .lesson-screen .companion__bubble { text-align: center; }
+  .lesson-screen .companion__bubble::before { left: 50%; top: -7px; transform: translateX(-50%) rotate(135deg); }
+  .lesson-screen .companion__line { justify-content: center; }
+  .lesson-screen .companion__reveal { justify-self: center; }
+
+  .lesson-screen .lesson__main { max-width: 760px; }
+  .lesson-screen .teach-step__next { justify-self: start; min-width: 260px; }
+  .lesson-screen .ex__options:not(.ex__options--tf) { gap: 12px; }
+}
+
+/* Telefones pequenos */
+@media (max-width: 359.98px) {
+  .lesson-screen > .lesson { --z: 88px; --lift: 36px; --pad: 16px; }
+  .lesson-screen .companion__bubble { padding: 8px 10px; font-size: var(--fs-xs); }
+}
+
+/* Quiz inicial: mesma composição de card */
+.lesson-screen--free > .lesson { margin-top: calc(var(--lift) + 12px); }
+
+/* O topo da aula rola junto: assim nada corta a cabeça do Zuno */
+.lesson-screen .lesson-bar { position: relative; top: auto; backdrop-filter: none; -webkit-backdrop-filter: none; background: transparent; }
