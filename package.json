@@ -1,0 +1,17 @@
+{
+  "name": "zuno",
+  "version": "0.1.0",
+  "description": "Zuno: plataforma de aprendizado de idiomas",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch",
+    "preview": "npx --yes serve dist -l 5173",
+    "seed": "node scripts/generate-seed.mjs",
+    "functions": "node scripts/copy-functions.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "private": true,
+  "type": "module"
+}
